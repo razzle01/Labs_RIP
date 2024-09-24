@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Корзина{% endblock %}
+  <body>
+    
+
+ 
+{% block content %}
+<div class="main-header"></div>
+<div class="bid-container">
+  <div class="bid-img">
+    <img src="{% static 'триммер.webp' %}" alt="Триммер" />
+  </div>
+
+
+  <div class="bid-info">
+    <h2>Основная информация</h2>
+
+    <div class="bid-block">
+      <label for="name">Наименование</label>
+      <p id="name">Электрический триммер для ногтей</p>
+    </div>
+    
+    <div class="bid-block">
+      <label for="category">Категория</label>
+      {% for var in categ_in_order %}
+      <p id="category">
+        <img src="{{var.image}}" alt="Категория" class="bid-icon" />
+         {{ var.name }}
+      </p>
+      {% endfor %} 
+    </div>
+
+    <div class="bid-block">
+      <label for="artikul">Артикул</label>
+      <p id="artikul">224165662</p>
+    </div>
+
+    <div class="bid-block">
+      <label for="brand">Бренд</label>
+      <p id="brand">TOP G</p>
+    </div>
+
+    <div class="bid-block bid-desc">
+      <label for="description">Описание</label>
+      <div class="bid-desc-placeholder"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

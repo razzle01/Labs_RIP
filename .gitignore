@@ -1,0 +1,7 @@
+env/
+__pycache__
+.vscode
+db.sqlite3
+media/
+minio_docker/
+env/
