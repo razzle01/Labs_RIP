@@ -6,17 +6,18 @@
   <div class="main-space">
     <div class="main-header">
       <form action=""  method="get" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input name="text" placeholder="Найти на Wildberries" type="text" class="main-search" value={{ value }}><br><br>
-    </form>
+       
+        <input name="product" placeholder="Найти на Wildberries" type="text" class="main-search" value={{ value }}><br><br>
+      </form>
       
-      <a href="{% url 'bid_page' %}" class="main-cart-link">
+      <a href="{% url 'product_page' %}" class="main-cart-link">
         <div class="main-cart-icon">
           <img src="http://127.0.0.1:9000/picrip/cart.png" class="main-cart-img">
-          <span class="main-cart-text">Корзина</span>
+          <span class="main-cart-text">Корзина ({{ cart_count }})</span>
         </div>
       </a>
     </div>
+    
 
     <div class="main-container">
       {% for category in categories %}

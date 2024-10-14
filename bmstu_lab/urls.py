@@ -20,5 +20,5 @@ from app_lab1 import views
 urlpatterns = [
    path('', views.main_page, name='main_page'),  # Главная страница
    path('category/<int:category_id>/', views.category_detail, name='category_detail'),
-   path('bid/', views.bid_page, name='bid_page'),
+   path('product/', views.product_page, name='product_page'),
 ]

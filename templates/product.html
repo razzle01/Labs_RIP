@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Корзина{% endblock %}
+  <body>
+    
+{% block content %}
+<div class="main-header"></div>
+<div class="product-container">
+  
+
+  
+    <div class="product_info">
+      <div class="product_number">Товар №1</div>
+      
+      <div class="product_field_name">
+          <label class="product_label">Название:</label>
+          <div class="product_name">Триммер для ногтей</div>
+      </div>
+      <div class="product_field_price">
+          <label class="product_label">Цена:</label>
+          <div class="product_price">1500</div>
+      </div>
+      
+    </div>
+    
+
+    
+    
+    <div class="categories-block">
+      
+      {% for var in categ_in_order %}
+      <p id="category">
+        <!-- Чекбокс перед иконкой категории -->
+        <input type="checkbox" id="categories-checkbox-{{ forloop.counter }}" name="categories-checkbox" class="categories-checkbox">
+        <img src="{{var.image}}" alt="Категория" class="categories-icon" />
+        {{ var.name }}
+      </p>
+      {% endfor %} 
+    </div>
+
+
+</div>
+{% endblock %}
