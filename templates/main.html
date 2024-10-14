@@ -5,27 +5,46 @@
 {% block content %}
   <div class="main-space">
     <div class="main-header">
-      <form action=""  method="get" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input name="text" placeholder="Найти на Wildberries" type="text" class="main-search" value={{ value }}><br><br>
-    </form>
       
-      <a href="{% url 'bid_page' %}" class="main-cart-link">
-        <div class="main-cart-icon">
-          <img src="http://127.0.0.1:9000/picrip/cart.png" class="main-cart-img">
-          <span class="main-cart-text">Корзина</span>
+      <form action="" method="get" enctype="multipart/form-data">
+        
+        <input name="text" placeholder="Найти на Wildberries" type="text" class="main-search" value={{ value }}><br><br>
+      </form>
+    
+      {% if cart_empty %}
+        <!-- Неактивная кнопка, если корзина пуста -->
+        <div class="main-cart-link" style="pointer-events: none; opacity: 0.5;">
+          <div class="main-cart-icon">
+            <img src="http://127.0.0.1:9000/picrip/cart.png" class="main-cart-img">
+            <span class="main-cart-text">Корзина ({{ cart_count }})</span>
+          </div>
         </div>
-      </a>
+      {% else %}
+        <!-- Активная кнопка, если в корзине есть товары -->
+        <a href="{% url 'product_page' product.id %}" class="main-cart-link">
+          <div class="main-cart-icon">
+            
+            <img src="http://127.0.0.1:9000/picrip/cart.png" class="main-cart-img">
+            <span class="main-cart-text">Корзина ({{ cart_count }})</span>
+          </div>
+        </a>
+      {% endif %}
     </div>
+    
+    
 
     <div class="main-container">
       {% for category in categories %}
-        <a href="{% url 'category_detail' category.id %}" class="main-card-link">
-          <div class="main-card">
-            <img src="{{category.image}}" alt="{{ category.name }}" class="main-img">
+        <div class="main-card">
+          <a href="{% url 'category_detail' category.id %}" class="main-card-link">
+            <img src="{{category.image_url}}" alt="{{ category.name }}" class="main-img">
             <p class="main-desc">{{ category.name }}</p>
-          </div>
-        </a>
+            
+          </a>
+          
+          <!-- Кнопка для добавления в корзину -->
+          <a href="{% url 'add_to_cart' category.id %}" class="add-to-cart-btn">Добавить в корзину</a>
+        </div>
       {% endfor %}
     </div>
   </div>

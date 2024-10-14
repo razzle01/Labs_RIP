@@ -5,12 +5,13 @@
   <div class="main-header"></div>
   <div class="cat-container">
     <div class="cat-image">
-      <img src="{{category.image}}" alt="Категория товаров" />
+      <img src="{{ category.image_url }}" alt="Категория товаров" />
     </div>
     <div class="cat-info">
       <h1>{{ category.name }}</h1>
-      <p>{{ category.description }}</p>
-      <p>Количество товаров: <span>{{ category.item_count }}</span></p>
+      <p>Описание: <span>{{ category.description }}</span></p>
+      
+
     </div>
   </div>
 {% endblock %}
