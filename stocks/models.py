@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
+import random
+from django.contrib.auth.hashers import make_password
 
 class AuthUser(models.Model):
     password = models.CharField(max_length=128)
@@ -14,6 +15,12 @@ class AuthUser(models.Model):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now=True)
     first_name = models.CharField(max_length=150)
+    
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+        
+    def __str__(self):
+        return f'{self.username}'
 
     class Meta:
         managed = False
@@ -44,8 +51,22 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Дата создания заявки
     formed_at = models.DateTimeField(null=True, blank=True)  # Дата формирования заявки
     completed_at = models.DateTimeField(null=True, blank=True)  # Дата завершения заявки
+    rejected_at = models.DateTimeField(null=True, blank=True)
     moderator = models.ForeignKey('AuthUser', on_delete=models.SET_NULL, null=True, blank=True, related_name='moderated_products')  # Модератор, завершивший/отклонивший заявку
-
+    platform_commission = models.DecimalField(
+        max_digits = 5, decimal_places=2, null=True, blank=True, verbose_name = "Комиссия площадки"
+    )
+    
+    
+    def save(self, *args, **kwargs):
+        # Если статус заявки становится 'completed', устанавливаем комиссию
+        if self.status == 'completed' and self.platform_commission is None:
+            self.platform_commission = round(random.uniform(5.00, 20.00), 2)
+        # Если статус не 'completed', обнуляем комиссию
+        elif self.status != 'completed':
+            self.platform_commission = None
+        super().save(*args, **kwargs)
+            
     # Метод для изменения статуса заявки
     def update_status(self, new_status, user):
         if self.status == 'draft' and new_status == 'formed':
@@ -59,6 +80,7 @@ class Product(models.Model):
         elif self.status == 'formed' and new_status in ['completed', 'rejected'] and user.is_superuser:
             self.status = new_status
             self.completed_at = timezone.now()
+            self.rejected_at = timezone.now()
             self.moderator = user
             self.save()
 
@@ -89,3 +111,5 @@ class CategoryProduct(models.Model):
 
     def __str__(self):
         return f"Категория {self.category.name} для продукта {self.product.id}"
+
+

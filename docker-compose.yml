@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   django:
@@ -6,7 +6,7 @@ services:
     container_name: django
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ../lab3:/usr/src/app
+      - ../lab4:/usr/src/app
     ports:
       - "8000:8000"
     depends_on:
@@ -51,6 +51,16 @@ services:
     command: server --console-address ":9001" /data
     env_file: .env
     restart: always
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=YES
+
 
 volumes:
   pgdbdata: null
